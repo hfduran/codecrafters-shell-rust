@@ -34,5 +34,15 @@ pub fn read_input() -> String {
 }
 
 pub fn evaluate_command(command: &str) -> Box<dyn Command> {
-    CommandRegistry::evaluate(command)
+    let (identifier, argument) = split_once_whitespace(command);
+    let command = CommandRegistry::evaluate(identifier, argument);
+    command
+    // now: check if the command has argument, and set them!!
+}
+
+fn split_once_whitespace(s: &str) -> (&str, &str) {
+    match s.split_once(char::is_whitespace) {
+        Some((first, rest)) => (first, rest.trim_start()),
+        None => (s, ""),
+    }
 }
