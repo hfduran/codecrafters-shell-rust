@@ -1,7 +1,7 @@
 use crate::repl::repl_control::ReplControl;
 
 pub trait Command {
-    fn execute(&mut self) -> ReplControl;
+    fn execute(&self) -> ReplControl;
 }
 
 pub trait InvokableCommand {

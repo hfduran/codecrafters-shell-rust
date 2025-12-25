@@ -6,14 +6,20 @@ pub struct NotFoundCommand {
 
 impl NotFoundCommand {
     const NOT_FOUND_STRING: &'static str = ": command not found";
+
+    pub fn new(command: &str) -> Self {
+        Self {
+            command: String::from(command),
+        }
+    }
 }
 
 impl Command for NotFoundCommand {
-    fn execute(&mut self) -> ReplControl {
-        ReplControl::Print(String::from(format!(
+    fn execute(&self) -> ReplControl {
+        ReplControl::Print(format!(
             "{}{}",
             self.command,
             Self::NOT_FOUND_STRING
-        )))
+        ))
     }
 }

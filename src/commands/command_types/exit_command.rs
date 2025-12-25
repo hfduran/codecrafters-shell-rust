@@ -3,7 +3,7 @@ use crate::{commands::command::{Command, InvokableCommand}, repl::repl_control::
 pub struct ExitCommand;
 
 impl Command for ExitCommand {
-    fn execute(&mut self) -> ReplControl {
+    fn execute(&self) -> ReplControl {
         ReplControl::Exit
     }
 }
