@@ -1,6 +1,6 @@
 use crate::{
-    commands::{command::{Command, ConstructibleCommand, InvokableCommand}, command_input::CommandInput},
-    repl::repl_control::ReplControl,
+    commands::command::{Command, ConstructibleCommand, InvokableCommand},
+    repl::{repl_control::ReplControl, repl_input::ReplInput},
 };
 
 pub struct EchoCommand {
@@ -8,7 +8,7 @@ pub struct EchoCommand {
 }
 
 impl EchoCommand {
-    fn new(input: &CommandInput) -> Self {
+    fn new(input: &ReplInput) -> Self {
         Self {
             arg: input.clone_argument(),
         }
@@ -22,7 +22,7 @@ impl Command for EchoCommand {
 }
 
 impl ConstructibleCommand for EchoCommand {
-    fn new_box(input: &CommandInput) -> Box<dyn Command> {
+    fn new_box(input: &ReplInput) -> Box<dyn Command> {
         Box::from(Self::new(input))
     }
 }

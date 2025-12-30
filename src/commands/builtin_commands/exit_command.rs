@@ -1,9 +1,9 @@
-use crate::{commands::{command::{Command, ConstructibleCommand, InvokableCommand}, command_input::CommandInput}, repl::repl_control::ReplControl};
+use crate::{commands::command::{Command, ConstructibleCommand, InvokableCommand}, repl::{repl_control::ReplControl, repl_input::ReplInput}};
 
 pub struct ExitCommand;
 
 impl ExitCommand {
-    fn new(_: &CommandInput) -> Self {
+    fn new(_: &ReplInput) -> Self {
         Self {}
     }
 }
@@ -15,7 +15,7 @@ impl Command for ExitCommand {
 }
 
 impl ConstructibleCommand for ExitCommand {
-    fn new_box(input: &CommandInput) -> Box<dyn Command> {
+    fn new_box(input: &ReplInput) -> Box<dyn Command> {
         Box::from(Self::new(input))
     }
 }

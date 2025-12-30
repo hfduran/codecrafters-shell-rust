@@ -1,8 +1,9 @@
 pub mod repl_control;
+pub mod repl_input;
 
 use crate::{
-    commands::{command::Command, command_factory::CommandFactory, command_input::CommandInput},
-    repl::repl_control::ReplControl,
+    commands::{command::Command, command_factory::CommandFactory},
+    repl::{repl_control::ReplControl, repl_input::ReplInput},
 };
 use std::io::{self, Write};
 
@@ -35,7 +36,7 @@ pub fn read_input() -> String {
 
 pub fn evaluate_command(command: &str) -> Box<dyn Command> {
     let (identifier, argument) = split_once_whitespace(command);
-    let command_input = CommandInput::new(identifier, argument);
+    let command_input = ReplInput::new(identifier, argument);
     CommandFactory::create_command(&command_input)
 }
 

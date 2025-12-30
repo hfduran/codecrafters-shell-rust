@@ -1,9 +1,9 @@
-pub struct CommandInput {
+pub struct ReplInput {
     pub identifier: String,
     pub argument: String
 }
 
-impl CommandInput {
+impl ReplInput {
     pub fn new(identifier: &str, argument: &str) -> Self {
         Self {
             identifier : String::from(identifier),

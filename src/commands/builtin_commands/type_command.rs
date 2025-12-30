@@ -1,10 +1,9 @@
 use crate::{
     commands::{
         command::{Command, ConstructibleCommand, InvokableCommand},
-        command_factory::CommandRegistry,
-        command_input::CommandInput,
+        command_registry::CommandRegistry,
     },
-    repl::repl_control::ReplControl,
+    repl::{repl_control::ReplControl, repl_input::ReplInput},
 };
 
 pub struct TypeCommand {
@@ -41,7 +40,7 @@ impl Command for TypeCommand {
 }
 
 impl ConstructibleCommand for TypeCommand {
-    fn new_box(input: &CommandInput) -> Box<dyn Command> {
+    fn new_box(input: &ReplInput) -> Box<dyn Command> {
         Box::from(TypeCommand {
             argument: input.clone_argument(),
         })
