@@ -1,5 +1,5 @@
 use crate::{
-    commands::command::{Command, InvokableCommand},
+    commands::{command::{Command, InvokableCommand}, command_input::CommandInput},
     repl::repl_control::ReplControl,
 };
 
@@ -8,15 +8,19 @@ pub struct EchoCommand {
 }
 
 impl EchoCommand {
-    pub fn new(arg: &str) -> Self {
+    fn new(input: &CommandInput) -> Self {
         Self {
-            arg: String::from(arg)
+            arg: input.clone_argument(),
         }
+    }
+
+    pub fn new_box(input: &CommandInput) -> Box<dyn Command> {
+        Box::from(Self::new(input))
     }
 }
 
 impl InvokableCommand for EchoCommand {
-    const COMMAND: &'static str = "echo";
+    const IDENTIFIER: &'static str = "echo";
 }
 
 impl Command for EchoCommand {

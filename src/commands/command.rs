@@ -5,5 +5,5 @@ pub trait Command {
 }
 
 pub trait InvokableCommand {
-    const COMMAND: &'static str;
+    const IDENTIFIER: &'static str;
 }

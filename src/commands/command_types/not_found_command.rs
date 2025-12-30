@@ -1,4 +1,7 @@
-use crate::{commands::command::Command, repl::repl_control::ReplControl};
+use crate::{
+    commands::{command::Command, command_input::CommandInput},
+    repl::repl_control::ReplControl,
+};
 
 pub struct NotFoundCommand {
     pub command: String,
@@ -7,19 +10,19 @@ pub struct NotFoundCommand {
 impl NotFoundCommand {
     const NOT_FOUND_STRING: &'static str = ": command not found";
 
-    pub fn new(command: &str) -> Self {
+    fn new(input: &CommandInput) -> Self {
         Self {
-            command: String::from(command),
+            command: input.clone_identifier(),
         }
+    }
+
+    pub fn new_box(input: &CommandInput) -> Box<dyn Command> {
+        Box::from(Self::new(input))
     }
 }
 
 impl Command for NotFoundCommand {
     fn execute(&self) -> ReplControl {
-        ReplControl::Print(format!(
-            "{}{}",
-            self.command,
-            Self::NOT_FOUND_STRING
-        ))
+        ReplControl::Print(format!("{}{}", self.command, Self::NOT_FOUND_STRING))
     }
 }
