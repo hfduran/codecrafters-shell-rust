@@ -1,7 +1,7 @@
 use crate::{
     commands::{
-        command::{Command, InvokableCommand},
-        command_factory::CommandFactory,
+        command::{Command, ConstructibleCommand, InvokableCommand},
+        command_factory::CommandRegistry,
         command_input::CommandInput,
     },
     repl::repl_control::ReplControl,
@@ -27,23 +27,24 @@ impl CommandType {
 
 impl TypeCommand {
     fn get_type(&self) -> CommandType {
-        let command_factory = CommandFactory::new();
-        if command_factory.is_identifier_in_registry(&self.argument) {
+        if CommandRegistry::global().is_registered(&self.argument) {
             return CommandType::ShellBuiltin(self.argument.clone());
         }
         CommandType::InvalidCommand(self.argument.clone())
-    }
-
-    pub fn new_box(input: &CommandInput) -> Box<dyn Command> {
-        Box::from(TypeCommand {
-            argument: input.clone_argument(),
-        })
     }
 }
 
 impl Command for TypeCommand {
     fn execute(&self) -> ReplControl {
         ReplControl::Print(self.get_type().to_string())
+    }
+}
+
+impl ConstructibleCommand for TypeCommand {
+    fn new_box(input: &CommandInput) -> Box<dyn Command> {
+        Box::from(TypeCommand {
+            argument: input.clone_argument(),
+        })
     }
 }
 

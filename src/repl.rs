@@ -36,9 +36,7 @@ pub fn read_input() -> String {
 pub fn evaluate_command(command: &str) -> Box<dyn Command> {
     let (identifier, argument) = split_once_whitespace(command);
     let command_input = CommandInput::new(identifier, argument);
-    let command_factory = CommandFactory::new();
-    let command = command_factory.create_command(&command_input);
-    command
+    CommandFactory::create_command(&command_input)
 }
 
 fn split_once_whitespace(s: &str) -> (&str, &str) {

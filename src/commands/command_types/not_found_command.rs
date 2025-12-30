@@ -1,5 +1,5 @@
 use crate::{
-    commands::{command::Command, command_input::CommandInput},
+    commands::{command::{Command, ConstructibleCommand}, command_input::CommandInput},
     repl::repl_control::ReplControl,
 };
 
@@ -15,14 +15,16 @@ impl NotFoundCommand {
             command: input.clone_identifier(),
         }
     }
-
-    pub fn new_box(input: &CommandInput) -> Box<dyn Command> {
-        Box::from(Self::new(input))
-    }
 }
 
 impl Command for NotFoundCommand {
     fn execute(&self) -> ReplControl {
         ReplControl::Print(format!("{}{}", self.command, Self::NOT_FOUND_STRING))
+    }
+}
+
+impl ConstructibleCommand for NotFoundCommand {
+    fn new_box(input: &CommandInput) -> Box<dyn Command> {
+        Box::from(Self::new(input))
     }
 }
