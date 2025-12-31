@@ -4,6 +4,7 @@ use crate::{
         command_registry::CommandRegistry,
     },
     repl::{repl_control::ReplControl, repl_input::ReplInput},
+    sys_commands::get_sys_command_path,
 };
 
 pub struct TypeCommand {
@@ -12,6 +13,7 @@ pub struct TypeCommand {
 
 enum CommandType {
     ShellBuiltin(String),
+    SysCommand { identifier: String, path: String },
     InvalidCommand(String),
 }
 
@@ -20,15 +22,26 @@ impl CommandType {
         match self {
             CommandType::ShellBuiltin(identifier) => format!("{} is a shell builtin", &identifier),
             CommandType::InvalidCommand(identifier) => format!("{} not found", &identifier),
+            CommandType::SysCommand { identifier, path } => format!("{} is {}", identifier, path),
         }
     }
 }
 
 impl TypeCommand {
     fn get_type(&self) -> CommandType {
-        if CommandRegistry::global().is_registered(&self.argument) {
-            return CommandType::ShellBuiltin(self.argument.clone());
+        let identifier = &self.argument;
+
+        if CommandRegistry::global().is_registered(&identifier) {
+            return CommandType::ShellBuiltin(identifier.clone());
         }
+
+        if let Ok(sys_command) = get_sys_command_path(identifier) {
+            return CommandType::SysCommand {
+                identifier: identifier.clone(),
+                path: sys_command,
+            };
+        }
+
         CommandType::InvalidCommand(self.argument.clone())
     }
 }

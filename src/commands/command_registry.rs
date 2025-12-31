@@ -43,3 +43,29 @@ impl CommandRegistry {
         self.commands.get(identifier).copied()
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn global_should_have_something() {
+        let registry = CommandRegistry::global();
+        assert!(registry.is_registered(ExitCommand::IDENTIFIER));
+        assert!(registry.is_registered(EchoCommand::IDENTIFIER));
+        assert!(registry.is_registered(TypeCommand::IDENTIFIER));
+    }
+
+    #[test]
+    fn get_constructor_should_return_right_constructor() {
+        let registry = CommandRegistry::global();
+        let constructor = registry.get_constructor(ExitCommand::IDENTIFIER);
+        assert!(constructor.is_some());
+
+        let input = ReplInput {
+            argument: String::from(""),
+            identifier: String::from("exit"),
+        };
+        let _ = constructor.unwrap()(&input);
+    }
+}
