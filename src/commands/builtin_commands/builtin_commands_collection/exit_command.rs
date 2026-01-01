@@ -1,4 +1,7 @@
-use crate::{commands::command::{Command, ConstructibleCommand, InvokableCommand}, repl::{repl_control::ReplControl, repl_input::ReplInput}};
+use crate::{
+    commands::command::{Command, ConstructibleCommand, InvokableCommand},
+    repl::{repl_control::ReplControl, repl_input::ReplInput},
+};
 
 pub struct ExitCommand;
 

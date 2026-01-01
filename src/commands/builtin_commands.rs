@@ -1,4 +1,2 @@
-pub mod not_found_command;
-pub mod exit_command;
-pub mod echo_command;
-pub mod type_command;
+pub mod builtin_commands_collection;
+pub mod builtin_commands_registry;

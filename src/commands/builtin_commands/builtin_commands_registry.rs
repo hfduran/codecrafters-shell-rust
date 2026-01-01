@@ -4,7 +4,7 @@ use once_cell::sync::Lazy;
 
 use crate::{
     commands::{
-        builtin_commands::{
+        builtin_commands::builtin_commands_collection::{
             echo_command::EchoCommand, exit_command::ExitCommand, type_command::TypeCommand,
         },
         command::{Command, ConstructibleCommand, InvokableCommand},

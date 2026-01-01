@@ -1,6 +1,5 @@
 mod commands;
 mod repl;
-mod sys_commands;
 
 use repl::repl;
 

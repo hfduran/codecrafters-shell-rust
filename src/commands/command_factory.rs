@@ -1,8 +1,10 @@
 use crate::{
     commands::{
-        builtin_commands::not_found_command::NotFoundCommand,
+        builtin_commands::{
+            builtin_commands_collection::not_found_command::NotFoundCommand,
+            builtin_commands_registry::CommandRegistry,
+        },
         command::{Command, ConstructibleCommand},
-        command_registry::CommandRegistry,
     },
     repl::repl_input::ReplInput,
 };
