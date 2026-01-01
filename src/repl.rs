@@ -38,7 +38,6 @@ pub fn evaluate_command(command: &str) -> Box<dyn Command> {
     let (identifier, argument) = split_once_whitespace(command);
     let command_input = ReplInput::new(identifier, argument);
     CommandFactory::create_command(&command_input)
-    // TODO: check if it's sys command and if yes, call it
 }
 
 fn split_once_whitespace(s: &str) -> (&str, &str) {

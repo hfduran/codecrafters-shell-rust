@@ -10,7 +10,7 @@ pub struct EchoCommand {
 impl EchoCommand {
     fn new(input: &ReplInput) -> Self {
         Self {
-            arg: input.clone_argument(),
+            arg: input.clone_argument_as_str(),
         }
     }
 }

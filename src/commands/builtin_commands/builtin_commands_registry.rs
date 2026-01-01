@@ -14,11 +14,11 @@ use crate::{
 
 pub type CommandConstructor = fn(&ReplInput) -> Box<dyn Command>;
 
-pub struct CommandRegistry {
+pub struct BuiltinCommandsRegistry {
     commands: HashMap<&'static str, CommandConstructor>,
 }
 
-impl CommandRegistry {
+impl BuiltinCommandsRegistry {
     fn new() -> Self {
         let mut commands: HashMap<&'static str, CommandConstructor> = HashMap::new();
 
@@ -30,8 +30,8 @@ impl CommandRegistry {
         Self { commands }
     }
 
-    pub fn global() -> &'static CommandRegistry {
-        static REGISTRY: Lazy<CommandRegistry> = Lazy::new(CommandRegistry::new);
+    pub fn global() -> &'static BuiltinCommandsRegistry {
+        static REGISTRY: Lazy<BuiltinCommandsRegistry> = Lazy::new(BuiltinCommandsRegistry::new);
         &REGISTRY
     }
 
@@ -50,7 +50,7 @@ mod tests {
 
     #[test]
     fn global_should_have_something() {
-        let registry = CommandRegistry::global();
+        let registry = BuiltinCommandsRegistry::global();
         assert!(registry.is_registered(ExitCommand::IDENTIFIER));
         assert!(registry.is_registered(EchoCommand::IDENTIFIER));
         assert!(registry.is_registered(TypeCommand::IDENTIFIER));
@@ -58,7 +58,7 @@ mod tests {
 
     #[test]
     fn get_constructor_should_return_right_constructor() {
-        let registry = CommandRegistry::global();
+        let registry = BuiltinCommandsRegistry::global();
         let constructor = registry.get_constructor(ExitCommand::IDENTIFIER);
         assert!(constructor.is_some());
 

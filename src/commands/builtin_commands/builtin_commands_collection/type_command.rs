@@ -19,7 +19,7 @@ impl Command for TypeCommand {
 impl ConstructibleCommand for TypeCommand {
     fn new_box(input: &ReplInput) -> Box<dyn Command> {
         Box::from(TypeCommand {
-            argument: input.clone_argument(),
+            argument: input.clone_argument_as_str(),
         })
     }
 }

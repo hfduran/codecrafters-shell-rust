@@ -1,5 +1,5 @@
 use crate::{
-    commands::builtin_commands::builtin_commands_registry::CommandRegistry,
+    commands::builtin_commands::builtin_commands_registry::BuiltinCommandsRegistry,
     commands::sys_commands::get_sys_command_path,
 };
 
@@ -20,7 +20,7 @@ impl CommandType {
 }
 
 pub fn get_command_type(identifier: &str) -> CommandType {
-    if CommandRegistry::global().is_registered(&identifier) {
+    if BuiltinCommandsRegistry::global().is_registered(&identifier) {
         return CommandType::ShellBuiltin(String::from(identifier));
     }
 
