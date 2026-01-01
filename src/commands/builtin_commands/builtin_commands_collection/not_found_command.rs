@@ -1,5 +1,5 @@
 use crate::{
-    commands::command::{Command, ConstructibleCommand},
+    commands::command::{Command},
     repl::{repl_control::ReplControl, repl_input::ReplInput},
 };
 
@@ -21,9 +21,6 @@ impl Command for NotFoundCommand {
     fn execute(&self) -> ReplControl {
         ReplControl::Print(format!("{}{}", self.command, Self::NOT_FOUND_STRING))
     }
-}
-
-impl ConstructibleCommand for NotFoundCommand {
     fn new_box(input: &ReplInput) -> Box<dyn Command> {
         Box::from(Self::new(input))
     }

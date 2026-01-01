@@ -1,5 +1,5 @@
 use crate::{
-    commands::command::{Command, ConstructibleCommand, InvokableCommand},
+    commands::command::{Command, InvokableCommand},
     repl::{repl_control::ReplControl, repl_input::ReplInput},
 };
 
@@ -15,9 +15,6 @@ impl Command for ExitCommand {
     fn execute(&self) -> ReplControl {
         ReplControl::Exit
     }
-}
-
-impl ConstructibleCommand for ExitCommand {
     fn new_box(input: &ReplInput) -> Box<dyn Command> {
         Box::from(Self::new(input))
     }

@@ -22,14 +22,8 @@ impl CommandFactory {
                 .get_constructor(input.identifier.as_str())
                 .map(|constructor| constructor(input))
                 .unwrap(),
-            CommandType::SysCommand { path, identifier } => Box::from(SysCommand {
-                identifier: identifier,
-                path: path,
-                args: input.clone_argument_as_vec(),
-            }),
-            CommandType::InvalidCommand(identifier) => Box::from(NotFoundCommand {
-                command: identifier,
-            }),
+            CommandType::SysCommand { .. } => Box::from(SysCommand::new_box(input)),
+            CommandType::InvalidCommand(_) => Box::from(NotFoundCommand::new_box(input)),
         }
     }
 }

@@ -7,7 +7,7 @@ use crate::{
         builtin_commands::builtin_commands_collection::{
             echo_command::EchoCommand, exit_command::ExitCommand, type_command::TypeCommand,
         },
-        command::{Command, ConstructibleCommand, InvokableCommand},
+        command::{Command, InvokableCommand},
     },
     repl::repl_input::ReplInput,
 };
