@@ -3,7 +3,7 @@ use std::process::Command as RealCommand;
 use anyhow::Result;
 use which::which;
 
-use crate::commands::command::Command;
+use crate::commands::{args_wrapper::ArgsWrapper, command::Command};
 
 pub fn get_sys_command_path(identifier: &str) -> Result<String> {
     Ok(which(identifier)?.display().to_string())
@@ -11,13 +11,13 @@ pub fn get_sys_command_path(identifier: &str) -> Result<String> {
 
 pub struct SysCommand {
     pub identifier: String,
-    pub args: Vec<String>,
+    pub args_wrapper: ArgsWrapper,
 }
 
 impl Command for SysCommand {
     fn execute(&self) -> crate::repl::repl_control::ReplControl {
         let _ = RealCommand::new(&self.identifier)
-            .args(&self.args)
+            .args(&self.args_wrapper.get_args_vec())
             .spawn()
             .unwrap()
             .wait();
@@ -25,7 +25,7 @@ impl Command for SysCommand {
     }
     fn new_box(input: &crate::repl::repl_input::ReplInput) -> Box<dyn Command> {
         Box::from(Self {
-            args: input.clone_argument_as_vec(),
+            args_wrapper: input.args_wrapper.clone(),
             identifier: input.clone_identifier(),
         })
     }

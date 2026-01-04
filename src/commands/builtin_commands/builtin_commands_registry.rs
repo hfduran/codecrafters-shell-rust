@@ -46,6 +46,8 @@ impl BuiltinCommandsRegistry {
 
 #[cfg(test)]
 mod tests {
+    use crate::commands::args_wrapper::ArgsWrapper;
+
     use super::*;
 
     #[test]
@@ -63,7 +65,7 @@ mod tests {
         assert!(constructor.is_some());
 
         let input = ReplInput {
-            argument: String::from(""),
+            args_wrapper: ArgsWrapper::new(""),
             identifier: String::from("exit"),
         };
         let _ = constructor.unwrap()(&input);

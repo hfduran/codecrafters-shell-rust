@@ -1,5 +1,6 @@
 use crate::{
     commands::{
+        args_wrapper::ArgsWrapper,
         command::{Command, InvokableCommand},
         command_type::get_command_type,
     },
@@ -7,16 +8,20 @@ use crate::{
 };
 
 pub struct TypeCommand {
-    argument: String,
+    args_wrapper: ArgsWrapper,
 }
 
 impl Command for TypeCommand {
     fn execute(&self) -> ReplControl {
-        ReplControl::Print(get_command_type(&self.argument).to_string())
+        let args_vec = self.args_wrapper.get_args_vec();
+        let default_string = String::from("");
+
+        let identifier = args_vec.get(0).unwrap_or(&default_string);
+        ReplControl::Print(get_command_type(&identifier).to_string())
     }
     fn new_box(input: &ReplInput) -> Box<dyn Command> {
         Box::from(TypeCommand {
-            argument: input.clone_argument_as_str(),
+            args_wrapper: input.args_wrapper.clone(),
         })
     }
 }

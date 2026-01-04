@@ -4,7 +4,7 @@ pub trait Command {
     fn execute(&self) -> ReplControl;
     fn new_box(input: &ReplInput) -> Box<dyn Command>
     where
-        Self: Sized;
+        Self: Sized; // can only be called by concrete types
 }
 
 pub trait InvokableCommand {
