@@ -1,9 +1,10 @@
 use crate::{
     command::{
-        Command, builtin_command::{
-            collection::not_found_command::NotFoundCommand,
-            registry::BuiltinCommandsRegistry,
-        }, command_type::{CommandType, get_command_type}, sys_command::SysCommand
+        Command,
+        builtin_command::registry::BuiltinCommandsRegistry,
+        command_type::{CommandType, get_command_type},
+        not_found_command::NotFoundCommand,
+        sys_command::SysCommand,
     },
     repl::repl_input::ReplInput,
 };
@@ -18,7 +19,7 @@ impl CommandFactory {
             CommandType::ShellBuiltin(_) => BuiltinCommandsRegistry::global()
                 .get_constructor(input.identifier.as_str())
                 .map(|constructor| constructor(input))
-                .unwrap(),
+                .unwrap(), // kinda safe bc command_type already evaluated
             CommandType::SysCommand { .. } => Box::from(SysCommand::new_box(input)),
             CommandType::InvalidCommand(_) => Box::from(NotFoundCommand::new_box(input)),
         }
