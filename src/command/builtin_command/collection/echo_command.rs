@@ -1,8 +1,5 @@
 use crate::{
-    commands::{
-        args_wrapper::ArgsWrapper,
-        command::{Command, InvokableCommand},
-    },
+    command::{Command, args_wrapper::ArgsWrapper, builtin_command::BuiltinCommand},
     repl::{repl_control::ReplControl, repl_input::ReplInput},
 };
 
@@ -27,6 +24,6 @@ impl Command for EchoCommand {
     }
 }
 
-impl InvokableCommand for EchoCommand {
+impl BuiltinCommand for EchoCommand {
     const IDENTIFIER: &'static str = "echo";
 }

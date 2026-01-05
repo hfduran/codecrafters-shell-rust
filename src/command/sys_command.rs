@@ -3,7 +3,7 @@ use std::process::Command as RealCommand;
 use anyhow::Result;
 use which::which;
 
-use crate::commands::{args_wrapper::ArgsWrapper, command::Command};
+use crate::command::{args_wrapper::ArgsWrapper, Command};
 
 pub fn get_sys_command_path(identifier: &str) -> Result<String> {
     Ok(which(identifier)?.display().to_string())

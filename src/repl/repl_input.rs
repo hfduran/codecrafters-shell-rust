@@ -1,4 +1,4 @@
-use crate::commands::args_wrapper::ArgsWrapper;
+use crate::command::args_wrapper::ArgsWrapper;
 
 pub struct ReplInput {
     pub identifier: String,

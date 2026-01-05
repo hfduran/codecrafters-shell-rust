@@ -1,4 +1,4 @@
-mod commands;
+mod command;
 mod repl;
 
 use repl::repl;

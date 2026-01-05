@@ -1,5 +1,5 @@
 use crate::{
-    commands::command::{Command},
+    command::Command,
     repl::{repl_control::ReplControl, repl_input::ReplInput},
 };
 

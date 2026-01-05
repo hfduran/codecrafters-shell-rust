@@ -1,12 +1,9 @@
 use crate::{
-    commands::{
-        builtin_commands::{
-            builtin_commands_collection::not_found_command::NotFoundCommand,
-            builtin_commands_registry::BuiltinCommandsRegistry,
-        },
-        command::Command,
-        command_type::{CommandType, get_command_type},
-        sys_commands::SysCommand,
+    command::{
+        Command, builtin_command::{
+            collection::not_found_command::NotFoundCommand,
+            registry::BuiltinCommandsRegistry,
+        }, command_type::{CommandType, get_command_type}, sys_command::SysCommand
     },
     repl::repl_input::ReplInput,
 };

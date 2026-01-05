@@ -1,2 +1,0 @@
-pub mod builtin_commands_collection;
-pub mod builtin_commands_registry;

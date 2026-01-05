@@ -3,11 +3,12 @@ use std::collections::HashMap;
 use once_cell::sync::Lazy;
 
 use crate::{
-    commands::{
-        builtin_commands::builtin_commands_collection::{
+    command::{
+        Command,
+        builtin_command::BuiltinCommand,
+        builtin_command::collection::{
             echo_command::EchoCommand, exit_command::ExitCommand, type_command::TypeCommand,
         },
-        command::{Command, InvokableCommand},
     },
     repl::repl_input::ReplInput,
 };
@@ -46,7 +47,7 @@ impl BuiltinCommandsRegistry {
 
 #[cfg(test)]
 mod tests {
-    use crate::commands::args_wrapper::ArgsWrapper;
+    use crate::command::args_wrapper::ArgsWrapper;
 
     use super::*;
 

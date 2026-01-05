@@ -2,7 +2,7 @@ pub mod repl_control;
 pub mod repl_input;
 
 use crate::{
-    commands::{command::Command, command_factory::CommandFactory},
+    command::{Command, command_factory::CommandFactory},
     repl::{repl_control::ReplControl, repl_input::ReplInput},
 };
 use std::io::{self, Write};

@@ -16,8 +16,4 @@ impl ArgsWrapper {
             .map(String::from)
             .collect()
     }
-
-    pub fn get_args_str(&self) -> String {
-        self.raw_string.clone()
-    }
 }

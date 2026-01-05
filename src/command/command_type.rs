@@ -1,6 +1,6 @@
 use crate::{
-    commands::builtin_commands::builtin_commands_registry::BuiltinCommandsRegistry,
-    commands::sys_commands::get_sys_command_path,
+    command::builtin_command::registry::BuiltinCommandsRegistry,
+    command::sys_command::get_sys_command_path,
 };
 
 pub enum CommandType {

@@ -1,8 +1,7 @@
 use crate::{
-    commands::{
-        args_wrapper::ArgsWrapper,
-        command::{Command, InvokableCommand},
-        command_type::{get_command_type},
+    command::{
+        Command, args_wrapper::ArgsWrapper, builtin_command::BuiltinCommand,
+        command_type::get_command_type,
     },
     repl::{repl_control::ReplControl, repl_input::ReplInput},
 };
@@ -27,6 +26,6 @@ impl Command for TypeCommand {
     }
 }
 
-impl InvokableCommand for TypeCommand {
+impl BuiltinCommand for TypeCommand {
     const IDENTIFIER: &'static str = "type";
 }

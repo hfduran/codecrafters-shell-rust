@@ -1,5 +1,5 @@
 use crate::{
-    commands::command::{Command, InvokableCommand},
+    command::{Command, builtin_command::BuiltinCommand},
     repl::{repl_control::ReplControl, repl_input::ReplInput},
 };
 
@@ -20,6 +20,6 @@ impl Command for ExitCommand {
     }
 }
 
-impl InvokableCommand for ExitCommand {
+impl BuiltinCommand for ExitCommand {
     const IDENTIFIER: &'static str = "exit";
 }
