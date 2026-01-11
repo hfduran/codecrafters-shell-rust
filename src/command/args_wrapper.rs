@@ -16,7 +16,7 @@ impl ArgsWrapper {
 
         let chars: Vec<char> = self.raw_string.chars().collect();
 
-        let mut result: Vec<&str> = Vec::new();
+        let mut result: Vec<String> = Vec::new();
         let mut foot: usize = 0;
         let mut head: usize = 0;
         let max = self.raw_string.len();
@@ -29,7 +29,7 @@ impl ArgsWrapper {
                         foot += 1;
                     } else {
                         let word = &self.raw_string[foot..head];
-                        result.push(word);
+                        result.push(word.to_string());
                         head += 1;
                         foot = head;
                     }
@@ -39,11 +39,21 @@ impl ArgsWrapper {
                     while head < max && chars[head] != SINGLE_QUOTE {
                         head += 1;
                     }
+
                     if head == max {
                         panic!("Didn't close the single quotes!");
                     }
-                    let word = &self.raw_string[foot+1..head];
+
+                    while head < max && chars[head] != SPACE {
+                        head += 1;
+                    }
+
+                    let word = self.raw_string[foot..head]
+                        .chars()
+                        .filter(|c| *c != SINGLE_QUOTE)
+                        .collect::<String>();
                     result.push(word);
+
                     head += 1;
                     foot = head;
                 }
@@ -52,9 +62,12 @@ impl ArgsWrapper {
                 }
             }
         }
-        let word = &self.raw_string[foot..head];
-        result.push(word);
 
-        result.into_iter().map(String::from).collect()
+        if (foot != head) {
+            let word = &self.raw_string[foot..head];
+            result.push(word.to_string());
+        }
+
+        result
     }
 }
