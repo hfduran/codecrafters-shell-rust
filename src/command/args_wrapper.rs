@@ -61,9 +61,9 @@ impl ArgsWrapper {
                     head += 1;
                 }
             }
-        }
+       }
 
-        if (foot != head) {
+        if foot != head {
             let word = &self.raw_string[foot..head];
             result.push(word.to_string());
         }
