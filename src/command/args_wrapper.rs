@@ -10,6 +10,7 @@ impl ArgsWrapper {
         }
     }
 
+    #[rustfmt::skip]
     pub fn get_args_vec(&self) -> Vec<String> {
         const SPACE: char = ' ';
         const SINGLE_QUOTE: char = '\'';
@@ -25,9 +26,15 @@ impl ArgsWrapper {
             match chars[head] {
                 SPACE => {
                     if foot == head {
+                        /* arg1  arg2
+                                ^ head
+                                ^ foot  */
                         head += 1;
                         foot += 1;
                     } else {
+                        /* arg1  arg2
+                           ^   ^ head
+                           L foot       */
                         let word = &self.raw_string[foot..head];
                         result.push(word.to_string());
                         head += 1;
@@ -35,18 +42,37 @@ impl ArgsWrapper {
                     }
                 }
                 SINGLE_QUOTE => {
+                    /* 'hello there' hi
+                       ^ head
+                       ^ foot              */
                     head += 1;
                     while head < max && chars[head] != SINGLE_QUOTE {
                         head += 1;
                     }
 
                     if head == max {
+                        /* 'hello there
+                           ^           ^ head
+                           L foot              */
                         panic!("Didn't close the single quotes!");
                     }
 
+                    /* 'hello there' hi
+                       ^           ^ head
+                       L foot              */
+
                     while head < max && chars[head] != SPACE {
+                        /* 'hello there'include exclude
+                           ^           ^~~~~~~~ > this should be included!
+                           |           L head
+                           L foot               
+                        result: "hello thereinclude", "exclude"     */
                         head += 1;
                     }
+
+                    /* 'hello there' hi
+                       ^            ^ head
+                       L foot              */
 
                     let word = self.raw_string[foot..head]
                         .chars()
@@ -56,6 +82,11 @@ impl ArgsWrapper {
 
                     head += 1;
                     foot = head;
+
+                    /* 'hello there' hi
+                                     ^ head
+                                     L foot      */
+
                 }
                 _ => {
                     head += 1;
