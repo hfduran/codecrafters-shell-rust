@@ -14,6 +14,7 @@ impl ArgsWrapper {
     pub fn get_args_vec(&self) -> Vec<String> {
         const SPACE: char = ' ';
         const SINGLE_QUOTE: char = '\'';
+        const DOUBLE_QUOTE: char = '\"';
 
         let chars: Vec<char> = self.raw_string.chars().collect();
 
@@ -77,6 +78,53 @@ impl ArgsWrapper {
                     let word = self.raw_string[foot..head]
                         .chars()
                         .filter(|c| *c != SINGLE_QUOTE)
+                        .collect::<String>();
+                    result.push(word);
+
+                    head += 1;
+                    foot = head;
+
+                    /* 'hello there' hi
+                                     ^ head
+                                     L foot      */
+
+                }
+                DOUBLE_QUOTE => {
+                    /* 'hello there' hi
+                       ^ head
+                       ^ foot              */
+                    head += 1;
+                    while head < max && chars[head] != DOUBLE_QUOTE {
+                        head += 1;
+                    }
+
+                    if head == max {
+                        /* 'hello there
+                           ^           ^ head
+                           L foot              */
+                        panic!("Didn't close the single quotes!");
+                    }
+
+                    /* 'hello there' hi
+                       ^           ^ head
+                       L foot              */
+
+                    while head < max && chars[head] != SPACE {
+                        /* 'hello there'include exclude
+                           ^           ^~~~~~~~ > this should be included!
+                           |           L head
+                           L foot               
+                        result: "hello thereinclude", "exclude"     */
+                        head += 1;
+                    }
+
+                    /* 'hello there' hi
+                       ^            ^ head
+                       L foot              */
+
+                    let word = self.raw_string[foot..head]
+                        .chars()
+                        .filter(|c| *c != DOUBLE_QUOTE)
                         .collect::<String>();
                     result.push(word);
 
