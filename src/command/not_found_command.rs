@@ -12,7 +12,7 @@ impl NotFoundCommand {
 
     fn new(input: &ReplInput) -> Self {
         Self {
-            identifier: input.clone_identifier(),
+            identifier: input.program.clone(),
         }
     }
 }

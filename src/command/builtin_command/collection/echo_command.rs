@@ -1,23 +1,23 @@
 use crate::{
-    command::{Command, args_wrapper::ArgsWrapper, builtin_command::BuiltinCommand},
+    command::{Command, builtin_command::BuiltinCommand},
     repl::{repl_control::ReplControl, repl_input::ReplInput},
 };
 
 pub struct EchoCommand {
-    args: ArgsWrapper,
+    args: Vec<String>,
 }
 
 impl EchoCommand {
     fn new(input: &ReplInput) -> Self {
         Self {
-            args: input.args_wrapper.clone(),
+            args: input.args.clone(),
         }
     }
 }
 
 impl Command for EchoCommand {
     fn execute(&self) -> ReplControl {
-        ReplControl::Print(String::from(&self.args.get_args_vec().join(" ")))
+        ReplControl::Print(String::from(self.args.join(" ")))
     }
     fn new_box(input: &ReplInput) -> Box<dyn Command> {
         Box::from(Self::new(input))

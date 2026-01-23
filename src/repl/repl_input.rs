@@ -1,19 +1,13 @@
-use crate::command::args_wrapper::ArgsWrapper;
-
 pub struct ReplInput {
-    pub identifier: String,
-    pub args_wrapper: ArgsWrapper,
+    pub program: String,
+    pub args: Vec<String>,
 }
 
 impl ReplInput {
-    pub fn new(identifier: &str, argument: &[String]) -> Self {
+    pub fn new(program: &str, args: &[String]) -> Self {
         Self {
-            identifier: String::from(identifier),
-            args_wrapper: ArgsWrapper::new(argument.to_vec()),
+            program: program.to_string(),
+            args: args.to_vec(),
         }
-    }
-
-    pub fn clone_identifier(&self) -> String {
-        self.identifier.clone()
     }
 }
