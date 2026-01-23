@@ -67,6 +67,10 @@ impl ArgsWrapper {
                     is_double_quote_open = !is_double_quote_open;
                 }
                 ESCAPE_BAR => {
+                    if is_single_quote_open {
+                        word.push(c);
+                        continue;
+                    }
                     if is_previous_a_scape {
                         word.push(c);
                         is_previous_a_scape = false;
