@@ -14,8 +14,10 @@ impl ArgsWrapper {
         const SPACE: char = ' ';
         const SINGLE_QUOTE: char = '\'';
         const DOUBLE_QUOTE: char = '\"';
+        const ESCAPE_BAR: char = '\\';
 
         let mut is_previous_a_space: bool = false;
+        let mut is_previous_a_scape: bool = false;
         let mut is_single_quote_open: bool = false;
         let mut is_double_quote_open: bool = false;
 
@@ -25,6 +27,11 @@ impl ArgsWrapper {
         for c in self.raw_string.chars() {
             match c {
                 SPACE => {
+                    if is_previous_a_scape {
+                        word.push(c);
+                        is_previous_a_scape = false;
+                        continue;
+                    }
                     if is_single_quote_open || is_double_quote_open {
                         word.push(c);
                         continue;
@@ -36,6 +43,11 @@ impl ArgsWrapper {
                     is_previous_a_space = true;
                 }
                 SINGLE_QUOTE => {
+                    if is_previous_a_scape {
+                        word.push(c);
+                        is_previous_a_scape = false;
+                        continue;
+                    }
                     if is_double_quote_open {
                         word.push(c);
                         continue;
@@ -43,15 +55,29 @@ impl ArgsWrapper {
                     is_single_quote_open = !is_single_quote_open;
                 }
                 DOUBLE_QUOTE => {
+                    if is_previous_a_scape {
+                        word.push(c);
+                        is_previous_a_scape = false;
+                        continue;
+                    }
                     if is_single_quote_open {
                         word.push(c);
                         continue;
                     }
                     is_double_quote_open = !is_double_quote_open;
                 }
+                ESCAPE_BAR => {
+                    if is_previous_a_scape {
+                        word.push(c);
+                        is_previous_a_scape = false;
+                    } else {
+                        is_previous_a_scape = true;
+                    }
+                }
                 _ => {
-                    is_previous_a_space = false;
                     word.push(c);
+                    is_previous_a_space = false;
+                    is_previous_a_scape = false;
                 }
             }
         }
