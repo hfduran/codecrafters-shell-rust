@@ -10,143 +10,52 @@ impl ArgsWrapper {
         }
     }
 
-    #[rustfmt::skip]
     pub fn get_args_vec(&self) -> Vec<String> {
         const SPACE: char = ' ';
         const SINGLE_QUOTE: char = '\'';
         const DOUBLE_QUOTE: char = '\"';
 
-        let chars: Vec<char> = self.raw_string.chars().collect();
+        let mut is_previous_a_space: bool = false;
+        let mut is_single_quote_open: bool = false;
+        let mut is_double_quote_open: bool = false;
 
+        let mut word: String = String::new();
         let mut result: Vec<String> = Vec::new();
-        let mut foot: usize = 0;
-        let mut head: usize = 0;
-        let max = self.raw_string.len();
 
-        while head < max {
-            match chars[head] {
+        for c in self.raw_string.chars() {
+            match c {
                 SPACE => {
-                    if foot == head {
-                        /* arg1  arg2
-                                ^ head
-                                ^ foot  */
-                        head += 1;
-                        foot += 1;
-                    } else {
-                        /* arg1  arg2
-                           ^   ^ head
-                           L foot       */
-                        let word = &self.raw_string[foot..head];
-                        result.push(word.to_string());
-                        head += 1;
-                        foot = head;
+                    if is_single_quote_open || is_double_quote_open {
+                        word.push(c);
+                        continue;
                     }
+                    if !is_previous_a_space {
+                        result.push(word.clone());
+                        word = String::new();
+                    }
+                    is_previous_a_space = true;
                 }
                 SINGLE_QUOTE => {
-                    /* 'hello there' hi
-                       ^ head
-                       ^ foot              */
-                    head += 1;
-                    while head < max && chars[head] != SINGLE_QUOTE {
-                        head += 1;
+                    if is_double_quote_open {
+                        word.push(c);
+                        continue;
                     }
-
-                    if head == max {
-                        /* 'hello there
-                           ^           ^ head
-                           L foot              */
-                        panic!("Didn't close the single quotes!");
-                    }
-
-                    /* 'hello there' hi
-                       ^           ^ head
-                       L foot              */
-
-                    while head < max && chars[head] != SPACE {
-                        /* 'hello there'include exclude
-                           ^           ^~~~~~~~ > this should be included!
-                           |           L head
-                           L foot               
-                        result: "hello thereinclude", "exclude"     */
-                        head += 1;
-                    }
-
-                    /* 'hello there' hi
-                       ^            ^ head
-                       L foot              */
-
-                    let word = self.raw_string[foot..head]
-                        .chars()
-                        .filter(|c| *c != SINGLE_QUOTE)
-                        .collect::<String>();
-                    result.push(word);
-
-                    head += 1;
-                    foot = head;
-
-                    /* 'hello there' hi
-                                     ^ head
-                                     L foot      */
-
+                    is_single_quote_open = !is_single_quote_open;
                 }
                 DOUBLE_QUOTE => {
-                    /* 'hello there' hi
-                       ^ head
-                       ^ foot              */
-                    head += 1;
-                    while head < max && chars[head] != DOUBLE_QUOTE {
-                        head += 1;
+                    if is_single_quote_open {
+                        word.push(c);
+                        continue;
                     }
-
-                    if head == max {
-                        /* 'hello there
-                           ^           ^ head
-                           L foot              */
-                        panic!("Didn't close the single quotes!");
-                    }
-
-                    /* 'hello there' hi
-                       ^           ^ head
-                       L foot              */
-
-                    while head < max && chars[head] != SPACE {
-                        /* 'hello there'include exclude
-                           ^           ^~~~~~~~ > this should be included!
-                           |           L head
-                           L foot               
-                        result: "hello thereinclude", "exclude"     */
-                        head += 1;
-                    }
-
-                    /* 'hello there' hi
-                       ^            ^ head
-                       L foot              */
-
-                    let word = self.raw_string[foot..head]
-                        .chars()
-                        .filter(|c| *c != DOUBLE_QUOTE)
-                        .collect::<String>();
-                    result.push(word);
-
-                    head += 1;
-                    foot = head;
-
-                    /* 'hello there' hi
-                                     ^ head
-                                     L foot      */
-
+                    is_double_quote_open = !is_double_quote_open;
                 }
                 _ => {
-                    head += 1;
+                    is_previous_a_space = false;
+                    word.push(c);
                 }
             }
-       }
-
-        if foot != head {
-            let word = &self.raw_string[foot..head];
-            result.push(word.to_string());
         }
-
+        result.push(word.to_string());
         result
     }
 }
