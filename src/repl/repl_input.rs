@@ -6,10 +6,10 @@ pub struct ReplInput {
 }
 
 impl ReplInput {
-    pub fn new(identifier: &str, argument: &str) -> Self {
+    pub fn new(identifier: &str, argument: &[String]) -> Self {
         Self {
             identifier: String::from(identifier),
-            args_wrapper: ArgsWrapper::new(argument),
+            args_wrapper: ArgsWrapper::new(argument.to_vec()),
         }
     }
 

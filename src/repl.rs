@@ -2,8 +2,8 @@ pub mod repl_control;
 pub mod repl_input;
 
 use crate::{
-    command::{Command, command_factory::CommandFactory},
-    repl::{repl_control::ReplControl, repl_input::ReplInput},
+    command::{command_factory::CommandFactory},
+    repl::{repl_control::ReplControl, repl_input::ReplInput}, utils::extract_string_parts,
 };
 use std::io::{self, Write};
 
@@ -11,8 +11,7 @@ pub fn repl() {
     loop {
         print_prompt();
         let input = read_input();
-        let command = evaluate_command(&input);
-        let control = command.execute();
+        let control = evaluate_input(&input);
         match control {
             ReplControl::Print(v) => println!("{}", v),
             ReplControl::Exit => return,
@@ -34,15 +33,13 @@ pub fn read_input() -> String {
     input.trim().to_string()
 }
 
-pub fn evaluate_command(command: &str) -> Box<dyn Command> {
-    let (identifier, argument) = split_once_whitespace(command);
-    let command_input = ReplInput::new(identifier, argument);
-    CommandFactory::create_command(&command_input)
-}
-
-fn split_once_whitespace(s: &str) -> (&str, &str) {
-    match s.split_once(char::is_whitespace) {
-        Some((first, rest)) => (first, rest.trim_start()),
-        None => (s, ""),
+pub fn evaluate_input(input_str: &str) -> ReplControl {
+    let parts = extract_string_parts(input_str);
+    if let Some((program, argument)) = parts.split_first() {
+        let repl_input = ReplInput::new(program, argument);
+        let command = CommandFactory::create_command(&repl_input);
+        command.execute()
+    } else {
+        ReplControl::Continue
     }
 }
