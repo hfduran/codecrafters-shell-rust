@@ -1,4 +1,4 @@
-pub fn extract_string_parts(string: &str) -> Vec<String> {
+pub fn split_shell_string(string: &str) -> Vec<String> {
     if string == "" {
         return Vec::new();
     }

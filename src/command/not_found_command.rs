@@ -4,7 +4,7 @@ use crate::{
 };
 
 pub struct NotFoundCommand {
-    pub identifier: String,
+    pub program: String,
 }
 
 impl NotFoundCommand {
@@ -12,14 +12,14 @@ impl NotFoundCommand {
 
     fn new(input: &ReplInput) -> Self {
         Self {
-            identifier: input.program.clone(),
+            program: input.program.clone(),
         }
     }
 }
 
 impl Command for NotFoundCommand {
     fn execute(&self) -> ReplControl {
-        ReplControl::Print(format!("{}{}", self.identifier, Self::NOT_FOUND_STRING))
+        ReplControl::Print(format!("{}{}", self.program, Self::NOT_FOUND_STRING))
     }
     fn new_box(input: &ReplInput) -> Box<dyn Command> {
         Box::from(Self::new(input))

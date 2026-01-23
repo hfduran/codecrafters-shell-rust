@@ -5,8 +5,8 @@ use which::which;
 
 use crate::command::Command;
 
-pub fn get_sys_command_path(identifier: &str) -> Result<String> {
-    Ok(which(identifier)?.display().to_string())
+pub fn get_sys_command_path(program: &str) -> Result<String> {
+    Ok(which(program)?.display().to_string())
 }
 
 pub struct SysCommand {

@@ -21,5 +21,5 @@ impl Command for ExitCommand {
 }
 
 impl BuiltinCommand for ExitCommand {
-    const IDENTIFIER: &'static str = "exit";
+    const PROGRAM: &'static str = "exit";
 }

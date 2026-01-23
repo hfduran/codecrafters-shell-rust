@@ -25,5 +25,5 @@ impl Command for EchoCommand {
 }
 
 impl BuiltinCommand for EchoCommand {
-    const IDENTIFIER: &'static str = "echo";
+    const PROGRAM: &'static str = "echo";
 }

@@ -3,7 +3,7 @@ pub mod repl_input;
 
 use crate::{
     command::{command_factory::CommandFactory},
-    repl::{repl_control::ReplControl, repl_input::ReplInput}, utils::extract_string_parts,
+    repl::{repl_control::ReplControl, repl_input::ReplInput}, utils::split_shell_string,
 };
 use std::io::{self, Write};
 
@@ -34,7 +34,7 @@ pub fn read_input() -> String {
 }
 
 pub fn evaluate_input(input_str: &str) -> ReplControl {
-    let parts = extract_string_parts(input_str);
+    let parts = split_shell_string(input_str);
     if let Some((program, argument)) = parts.split_first() {
         let repl_input = ReplInput::new(program, argument);
         let command = CommandFactory::create_command(&repl_input);

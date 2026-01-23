@@ -24,9 +24,9 @@ impl BuiltinCommandsRegistry {
         let mut commands: HashMap<&'static str, CommandConstructor> = HashMap::new();
 
         // TODO: simplify with macros
-        commands.insert(ExitCommand::IDENTIFIER, ExitCommand::new_box);
-        commands.insert(EchoCommand::IDENTIFIER, EchoCommand::new_box);
-        commands.insert(TypeCommand::IDENTIFIER, TypeCommand::new_box);
+        commands.insert(ExitCommand::PROGRAM, ExitCommand::new_box);
+        commands.insert(EchoCommand::PROGRAM, EchoCommand::new_box);
+        commands.insert(TypeCommand::PROGRAM, TypeCommand::new_box);
 
         Self { commands }
     }
@@ -36,11 +36,11 @@ impl BuiltinCommandsRegistry {
         &REGISTRY
     }
 
-    pub fn is_registered(&self, identifier: &str) -> bool {
-        self.commands.contains_key(identifier)
+    pub fn is_registered(&self, program: &str) -> bool {
+        self.commands.contains_key(program)
     }
 
-    pub fn get_constructor(&self, identifier: &str) -> Option<CommandConstructor> {
-        self.commands.get(identifier).copied()
+    pub fn get_constructor(&self, program: &str) -> Option<CommandConstructor> {
+        self.commands.get(program).copied()
     }
 }

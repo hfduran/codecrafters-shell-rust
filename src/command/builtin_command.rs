@@ -5,5 +5,5 @@ pub mod registry;
 
 
 pub trait BuiltinCommand : Command {
-    const IDENTIFIER: &'static str;
+    const PROGRAM: &'static str;
 }

@@ -16,7 +16,7 @@ impl Command for TypeCommand {
         // now it's ignoring everyone after the first
         match self.args.get(0) {
             None => ReplControl::Continue,
-            Some(identifier) => ReplControl::Print(get_command_type(&identifier).to_string()),
+            Some(program) => ReplControl::Print(get_command_type(&program).to_string()),
         }
     }
     fn new_box(input: &ReplInput) -> Box<dyn Command> {
@@ -27,5 +27,5 @@ impl Command for TypeCommand {
 }
 
 impl BuiltinCommand for TypeCommand {
-    const IDENTIFIER: &'static str = "type";
+    const PROGRAM: &'static str = "type";
 }
