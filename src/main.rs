@@ -1,6 +1,6 @@
 mod command;
 mod repl;
-mod utils;
+mod input_processing;
 
 use repl::repl;
 
