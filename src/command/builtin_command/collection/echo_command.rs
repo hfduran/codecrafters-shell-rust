@@ -1,6 +1,6 @@
 use crate::{
-    command::{Command, builtin_command::BuiltinCommand},
-    repl::{repl_control::ReplControl, repl_input::ReplInput},
+    command::{Command, CommandOutput, builtin_command::BuiltinCommand},
+    repl::repl_input::ReplInput,
 };
 
 pub struct EchoCommand {
@@ -16,8 +16,8 @@ impl EchoCommand {
 }
 
 impl Command for EchoCommand {
-    fn execute(&self) -> ReplControl {
-        ReplControl::Print(String::from(self.args.join(" ")))
+    fn execute(&self) -> CommandOutput {
+        CommandOutput::from_output(Some(self.args.join(" ")))
     }
     fn new_box(input: &ReplInput) -> Box<dyn Command> {
         Box::from(Self::new(input))

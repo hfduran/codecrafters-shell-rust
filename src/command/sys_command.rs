@@ -3,7 +3,7 @@ use std::process::Command as RealCommand;
 use anyhow::Result;
 use which::which;
 
-use crate::command::Command;
+use crate::command::{Command, CommandOutput};
 
 pub fn get_sys_command_path(program: &str) -> Result<String> {
     Ok(which(program)?.display().to_string())
@@ -15,13 +15,13 @@ pub struct SysCommand {
 }
 
 impl Command for SysCommand {
-    fn execute(&self) -> crate::repl::repl_control::ReplControl {
+    fn execute(&self) -> CommandOutput {
         let _ = RealCommand::new(&self.program)
             .args(&self.args)
             .spawn()
             .unwrap()
             .wait();
-        crate::repl::repl_control::ReplControl::Continue
+        CommandOutput::from_output(None)
     }
     fn new_box(input: &crate::repl::repl_input::ReplInput) -> Box<dyn Command> {
         Box::from(Self {

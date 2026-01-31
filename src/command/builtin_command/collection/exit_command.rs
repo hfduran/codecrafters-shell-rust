@@ -1,6 +1,6 @@
 use crate::{
-    command::{Command, builtin_command::BuiltinCommand},
-    repl::{repl_control::ReplControl, repl_input::ReplInput},
+    command::{Command, CommandOutput, builtin_command::BuiltinCommand},
+    repl::repl_input::ReplInput,
 };
 
 pub struct ExitCommand;
@@ -12,8 +12,8 @@ impl ExitCommand {
 }
 
 impl Command for ExitCommand {
-    fn execute(&self) -> ReplControl {
-        ReplControl::Exit
+    fn execute(&self) -> CommandOutput {
+        CommandOutput::new(None, true)
     }
     fn new_box(input: &ReplInput) -> Box<dyn Command> {
         Box::from(Self::new(input))

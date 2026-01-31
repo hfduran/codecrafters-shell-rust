@@ -1,7 +1,4 @@
-use crate::{
-    command::Command,
-    repl::{repl_control::ReplControl, repl_input::ReplInput},
-};
+use crate::{command::{Command, CommandOutput}, repl::repl_input::ReplInput};
 
 pub struct NotFoundCommand {
     pub program: String,
@@ -18,8 +15,8 @@ impl NotFoundCommand {
 }
 
 impl Command for NotFoundCommand {
-    fn execute(&self) -> ReplControl {
-        ReplControl::Print(format!("{}{}", self.program, Self::NOT_FOUND_STRING))
+    fn execute(&self) -> CommandOutput {
+        CommandOutput::from_output(Some(format!("{}{}", self.program, Self::NOT_FOUND_STRING)))
     }
     fn new_box(input: &ReplInput) -> Box<dyn Command> {
         Box::from(Self::new(input))

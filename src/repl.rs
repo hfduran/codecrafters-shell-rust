@@ -2,8 +2,9 @@ pub mod repl_control;
 pub mod repl_input;
 
 use crate::{
-    command::{command_factory::CommandFactory},
-    repl::{repl_control::ReplControl, repl_input::ReplInput}, input_processing::extract_input_parts,
+    command::{Command, command_factory::CommandFactory},
+    input_processing::{InputPart, parse_input},
+    repl::{repl_control::ReplControl, repl_input::ReplInput},
 };
 use std::io::{self, Write};
 
@@ -34,12 +35,34 @@ pub fn read_input() -> String {
 }
 
 pub fn evaluate_input(input_str: &str) -> ReplControl {
-    let parts = extract_input_parts(input_str);
-    if let Some((program, argument)) = parts.split_first() {
+    let parsed_input = parse_input(input_str);
+
+    let mut word_sequence: Vec<String> = Vec::new();
+    for part in parsed_input.get_parts() {
+        match part {
+            InputPart::Word(word) => {
+                word_sequence.push(word);
+            }
+            InputPart::Operator(_) => {}
+        }
+    }
+
+    if let Some((program, argument)) = word_sequence.split_first() {
         let repl_input = ReplInput::new(program, argument);
         let command = CommandFactory::create_command(&repl_input);
-        command.execute()
+        execute_command(command)
     } else {
         ReplControl::Continue
     }
+}
+
+pub fn execute_command(command: Box<dyn Command>) -> ReplControl {
+    let response = command.execute();
+    if response.exit {
+        return ReplControl::Exit;
+    }
+    if let Some(string) = response.output {
+        return ReplControl::Print(string);
+    }
+    ReplControl::Continue
 }

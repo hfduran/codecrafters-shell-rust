@@ -5,21 +5,23 @@ const ESCAPE_BAR: char = '\\';
 const FORWARD: char = '>';
 const PIPE: char = '|';
 
+#[derive(Clone, Copy)]
 pub enum Operator {
     Forward,
     Pipe,
 }
 
+#[derive(Clone)]
 pub enum InputPart {
     Word(String),
     Operator(Operator),
 }
 
-pub struct ParsedInput {
+pub struct InputParser {
     parts: Vec<InputPart>,
 }
 
-impl ParsedInput {
+impl InputParser {
     fn new() -> Self {
         Self { parts: Vec::new() }
     }
@@ -40,17 +42,14 @@ impl ParsedInput {
         }
     }
 
-    fn words_values(&mut self) -> Vec<String> {
-        self.parts.iter().filter_map(|x| match x {
-            InputPart::Operator(_) => {None},
-            InputPart::Word(val) => {Some(val.clone())}
-        }).collect()
+    pub fn get_parts(&self) -> Vec<InputPart> {
+        self.parts.clone()
     }
 }
 
-pub fn extract_input_parts(string: &str) -> Vec<String> {
+pub fn parse_input(string: &str) -> InputParser {
     if string == "" {
-        return Vec::new();
+        return InputParser::new();
     }
 
     let mut is_previous_a_space: bool = false;
@@ -59,7 +58,7 @@ pub fn extract_input_parts(string: &str) -> Vec<String> {
     let mut is_double_quote_open: bool = false;
 
     let mut word: String = String::new();
-    let mut real_result: ParsedInput = ParsedInput::new();
+    let mut real_result: InputParser = InputParser::new();
 
     for c in string.chars() {
         match c {
@@ -136,5 +135,5 @@ pub fn extract_input_parts(string: &str) -> Vec<String> {
         }
     }
     real_result.add_word(&word);
-    real_result.words_values()
+    real_result
 }
